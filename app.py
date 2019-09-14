@@ -20,7 +20,7 @@ def homepage():
 	'''Displays appropriate homepage based on whether user is logged in.'''
 	if session.get("uname"):
 		username = session["uname"]
-		return render_template("loggedIn.html", user = username, arr1 = db.getCreatedProblems(username),arr2 =db.getInProgressProblems(username),arr3=db.getDoneProblems(username) )
+		return render_template("loggedIn.html", user = username, arr1 = db.getCreatedProblems(username),arr2 =db.getInProgressProblems(username),arr3=db.getDoneProblems(username),arr4 = db.getPopular())
 	return render_template("login.html",Title = 'Login')
 
 @app.route("/newUser", methods=['POST','GET'])
@@ -117,14 +117,18 @@ def edit():
 def vote():
 	try:
 		pid = request.form['Submit1']
+		name = db.getName(pid);
 		vote = 1
+		db.storeVote(pid,vote);
+		db.updateVote(pid,session["uname"],vote);
+		return redirect(url_for('display', name = name))
 	except:
 		pid = request.form['Submit2']
+		name = db.getName(pid);
 		vote = -1
-	db.storeVote(pid,vote);
-	print(pid)
-	return redirect(url_for('display',name = db.getName(pid)))
-
+		db.storeVote(pid,vote);
+		db.updateVote(pid,session["uname"],vote);
+		return redirect(url_for('display', name = name))
 
 @app.route('/problem/<name>',methods=['POST','GET'])
 def display(name):
@@ -132,7 +136,10 @@ def display(name):
 	id = id[0]
 	file_name = './problems/' + id + '.p'
 	problem = pickle.load(open(file_name, 'rb'))[0]
-	return render_template("index.html", problemstate= problem,pid = id,user =session["uname"],problemname = name)
+	print(id)
+	bool = db.didVote(id,session["uname"])
+	print(bool)
+	return render_template("index.html", problemstate= problem,pid = id,user =session["uname"],problemname = name,voted = bool)
 
 @app.route('/get_code/<id>/<pid>/<lang>')
 def get_code(id,pid,lang):

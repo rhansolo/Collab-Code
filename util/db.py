@@ -9,7 +9,7 @@ def create():
 	c.execute("CREATE TABLE if not exists users(username TEXT, name TEXT, email TEXT, password TEXT)")
 	c.execute("CREATE TABLE if not exists user(time TEXT,id TEXT,user TEXT, type TEXT, path TEXT)")
 	c.execute("CREATE TABLE if not exists question(name TEXT, id TEXT, author TEXT, upvotes INTEGER, downvotes INTEGER)")
-
+	c.execute("CREATE TABLE if not exists votes(id TEXT, user TEXT, upordown TEXT)")
 
 
 def getPwd(givenUname):
@@ -101,7 +101,29 @@ def storeVote(pid,vote):
 			cur.execute("UPDATE question SET upvotes = upvotes + 1 WHERE id = ?",(pid,))
 		else:
 			cur.execute("UPDATE question SET downvotes = downvotes + 1 WHERE id = ?",(pid,))
-
+def updateVote(pid,user,vote):
+	with sqlite3.connect("discobandit.db") as db:
+		cur= db.cursor()
+		print("UPDATE")
+		if(vote > 0):
+			cur.execute("UPDATE votes SET upordown = ? WHERE id = ? AND user = ?",("up",pid,user,))
+		else:
+			cur.execute("UPDATE votes SET upordown = ? WHERE id = ? AND user = ?",("down",pid,user,))
+def didVote(pid,user):
+	with sqlite3.connect("discobandit.db") as db:
+		cur= db.cursor()
+		name = cur.execute("SELECT * from votes WHERE id = ? AND user = ?",(pid,user,)).fetchall()
+		print("NAME")
+		print(name)
+		if (len(name) == 0):
+			return False
+		else:
+			return True
+def getPopular():
+	with sqlite3.connect("discobandit.db") as db:
+		cur= db.cursor()
+		arr = cur.execute("SELECT * from question ORDER BY upvotes-downvotes DESC").fetchall()
+	return arr
 def getID(name):
 	with sqlite3.connect("discobandit.db") as db:
 		cur= db.cursor()

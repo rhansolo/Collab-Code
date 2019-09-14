@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-{% extends "base.html" %}
-{# All pages that inherit allow for logout#}
+{# Template used for all pages #}
+<html>
+<head>
+    {% block head %}
+
+    <title>{% block title %} {% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    {% endblock %}
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Code</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+    <form class="form-inline" href = "/search">
+      <input class="form-control mr-sm-2" name = "query" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <form action="/logout" method="post"><button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>   </form>
+  </div>
+</nav>
+  {% block content0 %}
+  {# To fill in body of page #}
+  {% endblock %}
+
+    <font color="red"> {% set msgs = get_flashed_messages() %}
+        {# Used to flash messages#}
+        {% for each in msgs %}
+        {{each}}
+        <br>
+        {% endfor %}
+    </font>
 
 
-{% block content0 %}
-<form action="/logout" method="POST">
-    <div align ="right"><button type ="submit">{% block log %} {% endblock %}</button></div>
-</form>
-{% endblock %}
+    {% block content %}
+    {# To fill in body of page #}
+    {% endblock %}
+</body>
+</html>
