@@ -66,7 +66,7 @@
                         <a class="dropdown-item" href="#">C++</a>
                       </div>
                     </div>
-                    <button type="button" class="btn btn-sm btn-secondary" id="submit">Submit</button>
+                    <button type="button" class="btn btn-sm btn-secondary" id="submit" onclick="submit()">Submit</button>
                 </div>
                 <div id="editor">public class Solution {
     public static void main(String[] args) {
@@ -127,6 +127,15 @@
         console.log("updated code");
     }
 
+    function submit(editor, id, pid) {
+        lang = $(".dropdown-menu").closest(".btn-group").find('.btn').text()
+        if (lang == "Java") lang = "java";
+        if (lang == "Python") lang = "py";
+        if (lang == "C++") lang = "cpp";
+        fetch("/submit/"+id+"/"+pid+"/Solution."+lang);
+        console.log("submitted code");
+    }
+
     function begin(id, pid) {
         ace.require("ace/ext/language_tools");
 
@@ -157,6 +166,26 @@
             setLanguage(updateText, editor, id, pid);
           }
 
+        });
+
+        var submit = $(".submit");
+        submit.on('click', function() {
+            code_content = editor.getValue();
+            lang = $(".dropdown-menu").closest(".btn-group").find('.btn').text()
+            if (lang == "Java") lang = "java";
+            if (lang == "Python") lang = "py";
+            if (lang == "C++") lang = "cpp";
+            fetch("/write_code/"+id+"/"+pid+"/Solution."+lang, {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    code: code_content
+                })
+            })
+            .then(submit(editor, id, pid));
         });
 
         setLanguage("Java", editor, id, pid);
