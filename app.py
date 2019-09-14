@@ -123,7 +123,7 @@ def display(name):
 @app.route('/get_code/<id>/<pid>/<lang>')
 def get_code(id,pid,lang):
     dict = {"Solution.java":"public class Solution {\n    public static void main(String[] args) {\n        \n    }\n}",
-        "Solution.cpp" : "#include <bits/stdc++.h>\n\nusing namespace std;\n\nint main() {\n    return 0;\n}",
+        "Solution.cpp" : "#include <bits/stdc++.h>\n\nusing namespace std;\n\nint main(int argc, char** argv) {\n    return 0;\n}",
         "Solution.py": "if __name__ == '__main__':\n    "}
     path = "./working/"+id + "_" + pid
     if not os.path.exists(path):
@@ -159,7 +159,7 @@ def submit(id,pid,lang):
 	solutionpath = os.path.join(solutionpath, lang)
 	solutionpath = os.path.abspath(solutionpath)
 	#tmp = runner.run_java(solutionpath,questionpath)
-	tmp = runner.run_python(solutionpath,questionpath)
+	tmp = runner.run_cpp(solutionpath, questionpath)#tmp = runner.run_python(solutionpath,questionpath)
 	if (not tmp == "" and (len(set(tmp)) == 1 and tmp[0] == 'c')):
 		print("IS DONE")
 		db.updateStatus(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),pid,id,"done","./working/"+id + "_" + pid)
