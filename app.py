@@ -12,6 +12,8 @@ from passlib.hash import pbkdf2_sha256
 db.create()
 app = Flask(__name__, static_url_path='', static_folder='static')
 app.secret_key=os.urandom(32)# 32 bits of random data as a string
+is_progress_flag = False
+is_done_flag = False
 
 @app.route("/")
 def homepage():
@@ -138,24 +140,33 @@ def get_code(id,pid,lang):
 
 @app.route('/write_code/<id>/<pid>/<lang>',methods = ['POST','GET'])
 def write_code(id,pid,lang):
-    if request.method == 'POST':
-        path = "./working/"+id + "_" + pid
-        path = os.path.join(path, lang)
-        file = open(path,"w+")
-        file.write(request.json['code'])
-        file.close()
-        #db.updateStatus(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),id,pid,path)
-    return "fuck you"
+	if request.method == 'POST':
+		path = "./working/"+id + "_" + pid
+		path = os.path.join(path, lang)
+		file = open(path,"w+")
+		file.write(request.json['code'])
+		file.close()
+		global is_done_flag
+		global is_progress_flag
+		if (len(db.checkInProg(id,pid)) == 0):
+			print("IN PROGRESS")
+			db.addProg(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),pid,id,"inprog",path)
+		return "fuck you"
 
 @app.route('/submit/<id>/<pid>/<lang>')
 def submit(id,pid,lang):
-    questionpath = "problems/" + pid + ".p"
-    questionpath = os.path.abspath(questionpath)
-    solutionpath = "working/"+id + "_" + pid
-    solutionpath = os.path.join(solutionpath, lang)
-    solutionpath = os.path.abspath(solutionpath)
-    tmp = runner.run_java(solutionpath,questionpath)
-    return jsonify(tmp)
+	questionpath = "problems/" + pid + ".p"
+	questionpath = os.path.abspath(questionpath)
+	solutionpath = "working/"+id + "_" + pid
+	solutionpath = os.path.join(solutionpath, lang)
+	solutionpath = os.path.abspath(solutionpath)
+	tmp = runner.run_java(solutionpath,questionpath)
+	if (not tmp == "" and (len(set(tmp)) == 1 and tmp[0] == 'c')):
+		print("IS DONE")
+		db.updateStatus(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),pid,id,"done","./working/"+id + "_" + pid)
+
+	print(tmp)
+	return jsonify(tmp)
 
 
 

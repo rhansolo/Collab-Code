@@ -58,7 +58,7 @@ def getInProgressProblems(username):
 		for id in arr:
 			id = id[0]
 			name = cur.execute("SELECT name from question WHERE id = ?",(id,)).fetchone()
-			names.append(name[0])
+			names.append(name)
 	return names
 
 def getDoneProblems(username):
@@ -68,16 +68,31 @@ def getDoneProblems(username):
 		cur= db.cursor()
 		arr= cur.execute("SELECT id from user WHERE user = ? AND type = ?",(username,"done",)).fetchall()
 		for id in arr:
+			print("here")
+			print(id)
 			id = id[0]
 			name = cur.execute("SELECT name from question WHERE id = ?",(id,)).fetchone()
-			names.append(name[0])
+			names.append(name)
 	return names
 
-def updateStatus(time,id,pid,path):
+def updateStatus(time,pid,id,status,path):
+	print("UPDAINTG")
+	with sqlite3.connect("discobandit.db") as db:
+		cur= db.cursor()
+		cur.execute("DELETE FROM user WHERE id = ? AND user = ? AND type = ?",(pid,id,"inprog"))
+		cur.execute("INSERT INTO user VALUES(?,?,?,?,?)",(time,pid,id,"done",path))
+
+def checkInProg(id,pid):
+	with sqlite3.connect("discobandit.db") as db:
+		name = []
+		cur= db.cursor()
+		name = cur.execute("SELECT path from user WHERE id = ? AND user = ? AND type = ?",(pid,id,"inprog")).fetchall()
+		return name
+def addProg(time,pid,id,status,path):
+	print("UPDAINTG")
 	with sqlite3.connect("discobandit.db") as db:
 		cur= db.cursor()
 		cur.execute("INSERT INTO user VALUES(?,?,?,?,?)",(time,pid,id,"inprog",path))
-
 
 def getID(name):
 	with sqlite3.connect("discobandit.db") as db:
