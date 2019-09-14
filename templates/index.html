@@ -7,7 +7,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<title>ACE in Action</title>
+<title>Problem</title>
 <style type="text/css" media="screen">
     /*#edit {
         height: 100vh;
@@ -22,7 +22,7 @@
     }
 </style>
 </head>
-<body>
+<body onload="begin({{ user }}, {{ pid }})">
 
 <div class="container-fluid">
     <div class="row">
@@ -55,7 +55,7 @@
 <script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 <script>
-    function setLanguage(language) {
+    function setLanguage(language, editor) {
         javaTemplate = "public class Solution {\n    public static void main(String[] args) {\n        \n    }\n}";
         cppTemplate = "#include <bits/stdc++.h>\n\nusing namespace std;\n\nint main() {\n    return 0;\n}";
         pythonTemplate = "if __name__ == '__main__':\n    ";
@@ -76,31 +76,40 @@
         editor.gotoLine(1);
     }
 
-    ace.require("ace/ext/language_tools");
+    function begin(id, pid) {
+        ace.require("ace/ext/language_tools");
 
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/java");
-    editor.setOptions({
-            enableBasicAutocompletion: true,
-            enableSnippets: true,
-            enableLiveAutocompletion: false
-    });
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/java");
+        editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                enableLiveAutocompletion: false
+        });
 
-    var menus = $(".dropdown-menu");
-    menus.on('click', 'a', function(el) {
+        var menus = $(".dropdown-menu");
+        menus.on('click', 'a', function(el) {
 
-      var clickedElement = $(el.currentTarget);
-      var updateText = clickedElement.text();
-      var updateElement = $(el.currentTarget).closest(".btn-group").find('.btn');
+          var clickedElement = $(el.currentTarget);
+          var updateText = clickedElement.text();
+          var updateElement = $(el.currentTarget).closest(".btn-group").find('.btn');
 
-      if (updateElement.text() != updateText) {
-        updateElement.text(updateText);
-        updateElement.val(updateText);
-        setLanguage(updateText);
-      }
+          if (updateElement.text() != updateText) {
+            updateElement.text(updateText);
+            updateElement.val(updateText);
+            setLanguage(updateText, editor);
+          }
 
-    });
+        });
+
+        fetch("/get_code/"+id+"/"+pid+"/Solution.java") // Call the fetch function passing the url of the API as a parameter
+        .then(res => res.text())
+        .then(text => editor.setValue(text))
+        .catch(function(error) {
+            console.log(error);
+        });
+    }
 </script>
 </body>
 </html>
