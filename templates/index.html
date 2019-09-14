@@ -14,11 +14,25 @@
     }*/
 
     #editor {
-        height: calc(100vh - 58px);
+        height: calc(100vh - 73px);
     }
 
     #submit {
         float:right;
+    }
+
+    #tester {
+        width: 41.6%;
+    }
+
+    .scroll {
+        height: calc(100vh - 73px);
+        overflow-y: scroll;
+    }
+
+    .padded {
+        padding-left: 15px;
+        padding-right: 15px;
     }
 </style>
 </head>
@@ -26,15 +40,19 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-5 scroll">
+            <a href="/" class="fixed-top padded">< Back</a>
           <div class="card" id="problem">
             <h5 class="card-header">Problem: {{ problemname }}</h5>
             <div class="card-body">
               {{ problemstate }}
             </div>
           </div>
-          <div class="card" id="tester">
-            <h5 class="card-header">Submission Results</h5>
+          <div class="row fixed-bottom">
+              <div class="card d-none" id="tester">
+                <h5 class="card-header">Submission Results</h5>
+                <div class="card-body">Test</div>
+              </div>
           </div>
         </div>
         <div class="col-md-7">
@@ -76,14 +94,15 @@
             loadLanguage('cpp', editor, id, pid);
             editor.session.setMode("ace/mode/c_cpp");
         }
-
-        editor.gotoLine(1);
     }
 
     function loadLanguage(lang, editor, id, pid) {
         fetch("/get_code/"+id+"/"+pid+"/Solution."+lang) // Call the fetch function passing the url of the API as a parameter
         .then(res => res.text())
-        .then(text => editor.setValue(text))
+        .then(function(text) {
+            editor.setValue(text);
+            editor.gotoLine(1);
+        })
         .catch(function(error) {
             console.log(error);
         });
