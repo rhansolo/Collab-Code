@@ -51,7 +51,7 @@
           <div class="row fixed-bottom">
               <div class="card d-none" id="tester">
                 <h5 class="card-header">Submission Results</h5>
-                <div class="card-body">Test</div>
+                <div class="card-body" id="results">Test</div>
               </div>
           </div>
         </div>
@@ -127,6 +127,22 @@
         console.log("updated code");
     }
 
+    function handle_submission(text) {
+        if (typeof text === 'string' || text instanceof String) {
+            $('#results').html("<code>" + text + "</code>");
+        } else {
+            texts = "<ol>";
+            for (i = 0; i < text.length; i++) {
+                texts += "<li>";
+                texts += text[i]=="c"?"<span style=\"color: green;\">Correct</span>":text[i]=="i"?"<span style=\"color: red;\">Incorrect</span>":text[i]=="t"?"<span style=\"color: orange;\">Timeout</span>":text[i]=="e"?"<span style=\"color: red;\">Error</span>":"Unknown";
+                texts += "</li>";
+            }
+            texts += "</ol>"
+
+            $('#results').html(texts);
+        }
+    }
+
     function begin(id, pid) {
         ace.require("ace/ext/language_tools");
 
@@ -161,6 +177,9 @@
 
         var submit = $("#submit");
         submit.on('click', function() {
+            $('#tester').removeClass('d-none');
+            $('#results').html('Testing...');
+
             code_content = editor.getValue();
             lang = $(".dropdown-menu").closest(".btn-group").find('.btn').text()
             if (lang == "Java") lang = "java";
@@ -176,7 +195,9 @@
                     code: code_content
                 })
             })
-            .then(fetch("/submit/"+id+"/"+pid+"/Solution."+lang));
+            .then(fetch("/submit/"+id+"/"+pid+"/Solution."+lang)
+                .then(res => res.json())
+                .then(text => handle_submission(text)));
 
             console.log("submitted");
         });
