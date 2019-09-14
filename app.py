@@ -146,8 +146,6 @@ def write_code(id,pid,lang):
 		file = open(path,"w+")
 		file.write(request.json['code'])
 		file.close()
-		global is_done_flag
-		global is_progress_flag
 		if (len(db.checkInProg(id,pid)) == 0):
 			print("IN PROGRESS")
 			db.addProg(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),pid,id,"inprog",path)
@@ -160,7 +158,8 @@ def submit(id,pid,lang):
 	solutionpath = "working/"+id + "_" + pid
 	solutionpath = os.path.join(solutionpath, lang)
 	solutionpath = os.path.abspath(solutionpath)
-	tmp = runner.run_java(solutionpath,questionpath)
+	#tmp = runner.run_java(solutionpath,questionpath)
+	tmp = runner.run_python(solutionpath,questionpath)
 	if (not tmp == "" and (len(set(tmp)) == 1 and tmp[0] == 'c')):
 		print("IS DONE")
 		db.updateStatus(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),pid,id,"done","./working/"+id + "_" + pid)
