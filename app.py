@@ -114,7 +114,26 @@ def display(name):
     id = db.getID(name)[0]
     file_name = './problems/' + id + '.p'
     problem = pickle.load(open(file_name, 'rb'))[0]
-    return render_template("index.html")
+
+    return render_template("index.html", problemstate= problem,pid = id,user =session["uname"])
+
+@app.route('get_code/<id>/<pid>/<lang>')
+def get_code(id,pid,lang):
+    dict = ["Solution.java":"public class Solution {\n    public static void main(String[] args) {\n        \n    }\n}",
+        "Solution.cpp" : "#include <bits/stdc++.h>\n\nusing namespace std;\n\nint main() {\n    return 0;\n}",
+        "Solution.py": "if __name__ == '__main__':\n    "]
+    path = "./working/"+id + "_" + pid
+    if (!os.path.exists(path)):
+        os.mkdir(path)
+    else:
+        path += "/" + lang
+        if (os.path.exists(path)):
+            file = open(path,"r")
+            return file.read()
+        else:
+            file = open(path,"wb+")
+            file.write(dict[lang])
+            return dict[lang]
 
 def gen_rand():
     return str(binascii.b2a_hex(os.urandom(15)))
