@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% extends "baseLoggedIn.html" %}
+{% block content %}
 <html>
   <head>
     <title>Flask Template Example</title>
@@ -6,6 +8,10 @@
   <body>
     <div>
       <p>Welcome {{ user }}!</p>
+      <form action="/newproblem">
+      <button type="submit">Create Problem</button>
+      </form>
     </div>
   </body>
 </html>
+{% endblock %}

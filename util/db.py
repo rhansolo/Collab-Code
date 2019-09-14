@@ -8,7 +8,7 @@ def create():
 	# Creation of three tables as specified in design.pdf. Only created if missing
 	c.execute("CREATE TABLE if not exists users(username TEXT, name TEXT, email TEXT, password TEXT)")
 	c.execute("CREATE TABLE if not exists user(time TEXT,name TEXT, type TEXT, code TEXT)")
-	c.execute("CREATE TABLE if not exists question(name TEXT, user TEXT, id INTEGER, upvotes INTEGER, downvotes INTEGER)")
+	c.execute("CREATE TABLE if not exists question(name TEXT, id TEXT, upvotes INTEGER, downvotes INTEGER)")
 
 
 
@@ -25,3 +25,8 @@ def newAcct(givenUname,givenName,givenPwd,givenEmail):
 	with sqlite3.connect("discobandit.db") as db:
 		cur= db.cursor()
 		cur.execute("INSERT INTO users VALUES(?,?,?,?)",(givenUname,givenName,givenEmail,givenPwd)) #inserts hash version of password
+
+def addQuestion(name,id,upvotes,downvotes):
+	with sqlite3.connect("discobandit.db") as db:
+		cur = db.cursor()
+		cur.execute("INSERT INTO question VALUES(?,?,?,?)",(name,id,upvotes,downvotes))

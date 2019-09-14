@@ -1,6 +1,8 @@
 import os
+import pickle
 import sqlite3
 import datetime,os
+import os,binascii
 import util.db as db
 from flask import Flask, render_template, request, session, url_for, redirect, flash
 from passlib.hash import pbkdf2_sha256
@@ -63,6 +65,42 @@ def callback():
 		flash('Username is wrong!')
 		return redirect(url_for("homepage"))
 
+@app.route("/newproblem", methods=['GET'])
+def createNewProblem():
+	return render_template("createProblem.html")
+
+@app.route("/storeproblem", methods=['POST'])
+def store():
+    problemName = request.form["problemName"]
+    problem = request.form["problem"]
+
+    test_cases = [(request.form['t'+str(i)].split(), request.form['s'+str(i)].split()) for i in range(1, 11) if request.form['t'+str(i)] != '']
+    solution = request.form["solution"]
+
+    to_save = (problem, test_cases, solution)
+    binascii.b2a_hex(os.urandom(15))
+    tmp = gen_rand()
+    tmp = tmp[2:-1]
+    path = './problems/'+tmp+'.p'
+    while (os.path.exists(path)):
+        tmp = gen_rand()
+        path = './problems/'+tmp+'.p'
+    file = open(path, 'wb+')
+    pickle.dump(to_save, file)
+    db.addQuestion(problemName,tmp,0,0)
+    flash('Problem created!')
+    return redirect(url_for("homepage"))
+
+@app.route('/logout',methods=['POST','GET'])
+def logout():
+	'''Route logs the user out if they are logged in'''
+	if not session.get("uname"):
+		return redirect(url_for("homepage"))
+	session.pop('uname') #ends session
+	return redirect(url_for('homepage')) #goes to home, where you can login
+
+def gen_rand():
+    return str(binascii.b2a_hex(os.urandom(15)))
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
