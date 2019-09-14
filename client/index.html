@@ -1,26 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <title>ACE in Action</title>
 <style type="text/css" media="screen">
-    #editor { 
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+    /*#edit { 
+        height: 100vh;
+    }*/
+
+    #editor {
+        height: calc(100vh - 58px);
+    }
+
+    #submit {
+        float:right;
     }
 </style>
 </head>
 <body>
 
-<div id="editor"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            test
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-dark" id="edit">
+                <div class="card-header">
+                    <div class="btn-group">
+                      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Java</button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Java</a>
+                        <a class="dropdown-item" href="#">Python</a>
+                        <a class="dropdown-item" href="#">C++</a>
+                      </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-secondary" id="submit">Submit</button>
+                </div>
+                <div id="editor">public class Solution {
+    public static void main(String[] args) {
+        
+    }
+}</div>
+            </div>
+        </div>
+    </div>
+</div>
     
 <script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 <script>
+    function setLanguage(language) {
+        javaTemplate = "public class Solution {\n    public static void main(String[] args) {\n        \n    }\n}";
+        cppTemplate = "#include <bits/stdc++.h>\n\nusing namespace std;\n\nint main() {\n    return 0;\n}";
+        pythonTemplate = "if __name__ == '__main__':\n    ";
+
+        if (language == "Java") {
+            editor.setValue(javaTemplate);
+            editor.session.setMode("ace/mode/java");
+        }
+        if (language == "Python") {
+            editor.setValue(pythonTemplate);
+            editor.session.setMode("ace/mode/python");
+        }
+        if (language == "C++") {
+            editor.setValue(cppTemplate);
+            editor.session.setMode("ace/mode/c++");
+        }
+
+        editor.gotoLine(1);
+    }
+
+    ace.require("ace/ext/language_tools");
+
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/java");
+    editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: false
+    });
+
+    var menus = $(".dropdown-menu");
+    menus.on('click', 'a', function(el) { 
+
+      var clickedElement = $(el.currentTarget);
+      var updateText = clickedElement.text();
+      var updateElement = $(el.currentTarget).closest(".btn-group").find('.btn'); 
+
+      if (updateElement.text() != updateText) {
+        updateElement.text(updateText);
+        updateElement.val(updateText);
+        setLanguage(updateText);
+      }
+
+    });
 </script>
 </body>
 </html>
