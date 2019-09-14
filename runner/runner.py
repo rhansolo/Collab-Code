@@ -10,8 +10,6 @@ TIME_LIMIT = 2 # Time limit in seconds
 def run_java(file_path, question_path):
     file_path, file_name = os.path.split(file_path)
 
-    os.chdir(file_path if file_path != '' else '.')
-
     compiler = subprocess.Popen(['javac', os.path.join(file_path, file_name)], stdout=subprocess.PIPE,
                                 stdin=subprocess.PIPE, stderr=subprocess.PIPE,
                                 encoding='utf8')
