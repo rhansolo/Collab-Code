@@ -130,6 +130,12 @@ def getID(name):
 		id= cur.execute("SELECT id from question WHERE name = ?",(name,)).fetchone()
 	return id
 
+def searchKeyword(search):
+	with sqlite3.connect("discobandit.db") as db:
+		cur= db.cursor()
+		arr = cur.execute("SELECT * from question WHERE name LIKE '%"+search+"%' ORDER BY upvotes-downvotes DESC").fetchall()
+	return arr;
+
 def getName(id):
 	with sqlite3.connect("discobandit.db") as db:
 		cur= db.cursor()

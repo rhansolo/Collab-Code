@@ -112,7 +112,14 @@ def edit():
     print(questionTitle)
     return redirect(url_for('display',name = questionTitle))
 
-
+@app.route('/search',methods = ['POST','GET'])
+def search():
+	if not session.get("uname"):
+		return redirect(url_for("homepage"))
+	search = request.form['query']
+	arr = db.searchKeyword(search)
+	print(arr)
+	return render_template("results.html",arr = arr, keyword = search)
 @app.route('/vote',methods = ['POST'])
 def vote():
 	try:

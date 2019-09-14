@@ -1,77 +1,101 @@
 <!DOCTYPE html>
+{% extends "baseLoggedIn.html" %}
+{% block content %}
+
 <html>
   <head>
     <title>Flask Template Example</title>
+    <style>
+
+    </style>
   </head>
   <body>
+    <center><h2>Problem Creation</h2></center>
     <div>
-      <p>Problem Creation</p>
       <form action= "/storeproblem" method = "post">
-        <br>
-        Problem Name:
-        <input type= "text" name = "problemName">
-        <br>
-        Problem Statement:
-        <br>
-        <textarea name="problem" cols="50" rows="10"></textarea>
-        <br>
-        Test Case 1:
-        <input type= "text" name = "t1">
-        Solution 1:
-        <input type= "text" name = "s1">
-        <br>
-        Test Case 2:
-        <input type= "text" name = "t2">
-        Solution 2:
-        <input type= "text" name = "s2">
-        <br>
-        Test Case 3:
-        <input type= "text" name = "t3">
-        Solution 3:
-        <input type= "text" name = "s3">
-        <br>
-        Test Case 4:
-        <input type= "text" name = "t4">
-        Solution 4:
-        <input type= "text" name = "s4">
-        <br>
-        Test Case 5:
-        <input type= "text" name = "t5">
-        Solution 5:
-        <input type= "text" name = "s5">
-        <br>
-        Test Case 6:
-        <input type= "text" name = "t6">
-        Solution 6:
-        <input type= "text" name = "s6">
-        <br>
-        Test Case 7:
-        <input type= "text" name = "t7">
-        Solution 7:
-        <input type= "text" name = "s7">
-        <br>
-        Test Case 8:
-        <input type= "text" name = "t8">
-        Solution 8:
-        <input type= "text" name = "s8">
-        <br>
-        Test Case 9:
-        <input type= "text" name = "t9">
-        Solution 9:
-        <input type= "text" name = "s9">
-        <br>
-        Test Case 10:
-        <input type= "text" name = "t10">
-        Solution 10:
-        <input type= "text" name = "s10">
-        <br>
-        Solution:
-        <br>
-        <textarea name="solution" cols="50" rows="10"></textarea>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                  <br>
+                    <h4>Problem Name:<h4>
+                    <input type= "text" name = "problemName">
+                    <br>
+                    <h4>Problem Statement:</h4>
+                    <textarea name="problem" cols="70" rows="10"></textarea>
+                    <br>
+                    <h4>Solution:</h4>
+                    <textarea name="solution" cols="70" rows="10"></textarea>
+                    <br>                </div>
+                <div class="col-lg-6">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+
+
+                  Test Case 1 :
+                  <input type= "text" name = "t1">
+                  Solution 1 :
+                  <input type= "text" name = "s1">
+                  <br><br>
+                  Test Case 2 :
+                  <input type= "text" name = "t2">
+                  Solution 2 :
+                  <input type= "text" name = "s2">
+                  <br><br>
+                  Test Case 3 :
+                  <input type= "text" name = "t3">
+                  Solution 3 :
+                  <input type= "text" name = "s3">
+                  <br><br>
+                  Test Case 4 :
+                  <input type= "text" name = "t4">
+                  Solution 4 :
+                  <input type= "text" name = "s4">
+                  <br><br>
+                  Test Case 5 :
+                  <input type= "text" name = "t5">
+                  Solution 5 :
+                  <input type= "text" name = "s5">
+                  <br><br>
+                  Test Case 6 :
+                  <input type= "text" name = "t6">
+                  Solution 6 :
+                  <input type= "text" name = "s6">
+                  <br><br>
+                  Test Case 7 :
+                  <input type= "text" name = "t7">
+                  Solution 7 :
+                  <input type= "text" name = "s7">
+                  <br><br>
+                  Test Case 8 :
+                  <input type= "text" name = "t8">
+                  Solution 8 :
+                  <input type= "text" name = "s8">
+                  <br><br>
+                  Test Case 9 :
+                  <input type= "text" name = "t9">
+                  Solution 9 :
+                  <input type= "text" name = "s9">
+                  <br><br>
+                  Test Case 10:
+                  <input type= "text" name = "t10">
+                  Solution 10:
+                  <input type= "text" name = "s10">
+                </div>
+                </div>
+            </div>
+        </div>
         <br>
         <input type="submit" name="Subl">
       </form>
 
+
+
+
     </div>
   </body>
 </html>
+{% endblock %}
