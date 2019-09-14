@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{# Template used for all pages #}
+<html>
+<head>
+    {% block head %}
+
+    <title>{% block title %} {% endblock %}</title>
+
+    {% endblock %}
+</head>
+<body>
+  {% block content0 %}
+  {# To fill in body of page #}
+  {% endblock %}
+
+    <font color="red"> {% set msgs = get_flashed_messages() %}
+        {# Used to flash messages#}
+        {% for each in msgs %}
+        {{each}}
+        <br>
+        {% endfor %}
+    </font>
+
+
+    {% block content %}
+    {# To fill in body of page #}
+    {% endblock %}
+</body>
+</html>

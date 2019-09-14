@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %}Create Account{% endblock %}
+
+
+
+{% block content %}
+<form action="/addUser" method="post">
+    <p>Create a username and password </p>
+
+
+    Username: <input type="text" name="username">
+    <br>
+    Name: <input type= "text" name = "name">
+    <br>
+    Email: <input type ="text" name = "email">
+    <br>
+    Password: <input type="password" name="password">
+    <br>
+    Confirm Password: <input type="password" name="confirm_password">
+    <br>
+
+    <input type="submit" name="Subl">
+</form>
+
+{% endblock %}

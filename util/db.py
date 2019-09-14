@@ -6,5 +6,22 @@ def create():
 	db = sqlite3.connect(DB_FILE) # Open if file exists, otherwise create
 	c = db.cursor()               # Facilitate db operations
 	# Creation of three tables as specified in design.pdf. Only created if missing
-	c.execute("CREATE TABLE if not exists users(user TEXT, email TEXT, password TEXT, acctype TEXT, birth TEXT)")
-    c.
+	c.execute("CREATE TABLE if not exists users(username TEXT, name TEXT, email TEXT, password TEXT)")
+	c.execute("CREATE TABLE if not exists user(time TEXT,name TEXT, type TEXT, code TEXT)")
+	c.execute("CREATE TABLE if not exists question(name TEXT, user TEXT, id INTEGER, upvotes INTEGER, downvotes INTEGER)")
+
+
+
+def getPwd(givenUname):
+	'''Fetches password for given username'''
+	with sqlite3.connect("discobandit.db") as db:
+		cur= db.cursor()
+		fetchedHash= cur.execute("SELECT password from users WHERE username = ?",(givenUname,)).fetchall()
+	return fetchedHash
+
+
+def newAcct(givenUname,givenName,givenPwd,givenEmail):
+	'''Inserts username and password into users table'''
+	with sqlite3.connect("discobandit.db") as db:
+		cur= db.cursor()
+		cur.execute("INSERT INTO users VALUES(?,?,?,?)",(givenUname,givenName,givenEmail,givenPwd)) #inserts hash version of password

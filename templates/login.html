@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<center>
+
+<br>
+
+<form action="/authenticate" method="POST">
+    Username: <input type="text" name="username" autofocus placeholder="username" ><br>
+    Password: <input type="password" name="password" placeholder="password"><br>
+    <button type ="submit">Login</button>
+</form>
+
+<br>
+<br>
+
+<form action="/newUser" method="POST">
+    <button type ="submit">Create Account</button>
+</form>
+</center>
+
+
+
+{% endblock %}
