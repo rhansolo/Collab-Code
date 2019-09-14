@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col-md-6">
           <div class="card" id="problem">
-            <h5 class="card-header">Problem</h5>
+            <h5 class="card-header">Problem: {{ problemname }}</h5>
             <div class="card-body">
               {{ problemstate }}
             </div>
@@ -114,6 +114,27 @@
         });
 
         setLanguage("Java", editor, id, pid);
+
+        function updateCode() {
+            code_content = editor.getValue();
+            lang = $(".dropdown-menu").closest(".btn-group").find('.btn').text()
+            if (lang == "Java") lang = "java";
+            if (lang == "Python") lang = "py";
+            if (lang == "C++") lang = "cpp";
+            fetch("/write_code/"+id+"/"+pid+"/Solution."+lang, {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    code: code_content
+                })
+            })
+            console.log("updated code");
+        }
+
+        setInterval(updateCode, 30000);
     }
 </script>
 </body>
