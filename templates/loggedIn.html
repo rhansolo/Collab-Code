@@ -10,32 +10,15 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <title>Problem</title>
   </head>
-  <body>
-    <div>
+  <body>   
+  <div style="text-align: center;">
       <p>Welcome {{ user }}!</p>
       <form action="/newproblem">
       <button type="submit">Create Problem</button>
       </form>
     </div>
     <br>
-    <div style="width: 200px; float: left">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th scope="col">Created Problems</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          {% for name in arr1 %}
-          <tr><td><a href = {{ url_for('edit', title=name) }}>{{ name.0 }}</a></td></tr>
-          {# Displays url for specified story #}
-          {% endfor %}
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div style="width: 200px; float: left">
+<div style="width: 16%; 550px; margin-right: 2%; margin-left: 2%; float : left; overflow-y:scroll;">
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -52,7 +35,9 @@
     </tbody>
   </table>
 </div>
-<div style="width: 200px; float: left">
+
+
+   <div style="width: 16%; 550px; margin-right: 2%; margin-left: 2%; float : left; overflow-y:scroll;">
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -69,6 +54,24 @@
   </tbody>
 </table>
 </div>
+ <div style="width: 16%; height: 550px; margin-right: 2%; margin-left: 2%; float : left; overflow-y:scroll;">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Created Problems</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% for name in arr1 %}
+          <tr><td><a href = {{ url_for('edit', title=name) }}>{{ name.0 }}</a></td></tr>
+          {# Displays url for specified story #}
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 
   
   </body>
