@@ -73,12 +73,10 @@ def getDoneProblems(username):
 			names.append(name[0])
 	return names
 
-def updateStatus(id, pid):
+def updateStatus(time,id,pid,path):
 	with sqlite3.connect("discobandit.db") as db:
 		cur= db.cursor()
-		name = cur.execute("SELECT name from question WHERE id = ?",(id,)).fetchone()
-		name = name[0]
-		cur.execute("UPDATE user SET status = ? WHERE user = ? AND id = ?",("inprog",name,pid))
+		cur.execute("INSERT INTO user VALUES(?,?,?,?,?)",(time,pid,id,"inprog",path))
 
 
 def getID(name):

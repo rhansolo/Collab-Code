@@ -137,13 +137,14 @@ def get_code(id,pid,lang):
 
 @app.route('/write_code/<id>/<pid>/<lang>',methods = ['POST','GET'])
 def write_code(id,pid,lang):
-    db.updateStatus(id,pid)
     if request.method == 'POST':
         path = "./working/"+id + "_" + pid
         path = os.path.join(path, lang)
         file = open(path,"w+")
-        file.write(request.form['code'])
+        file.write(request.json['code'])
         file.close()
+        db.updateStatus(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),id,pid,path)
+    return "fuck you"
 
 def gen_rand():
     return str(binascii.b2a_hex(os.urandom(15)))
