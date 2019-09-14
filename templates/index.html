@@ -60,25 +60,30 @@
 <script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 <script>
-    function setLanguage(language, editor) {
-        javaTemplate = "public class Solution {\n    public static void main(String[] args) {\n        \n    }\n}";
-        cppTemplate = "#include <bits/stdc++.h>\n\nusing namespace std;\n\nint main() {\n    return 0;\n}";
-        pythonTemplate = "if __name__ == '__main__':\n    ";
-
+    function setLanguage(language, editor, id, pid) {
         if (language == "Java") {
-            editor.setValue(javaTemplate);
+            loadLanguage('java', editor, id, pid);
             editor.session.setMode("ace/mode/java");
         }
         if (language == "Python") {
-            editor.setValue(pythonTemplate);
+            loadLanguage('py', editor, id, pid);
             editor.session.setMode("ace/mode/python");
         }
         if (language == "C++") {
-            editor.setValue(cppTemplate);
+            loadLanguage('cpp', editor, id, pid);
             editor.session.setMode("ace/mode/c++");
         }
 
         editor.gotoLine(1);
+    }
+
+    function loadLanguage(lang, editor, id, pid) {
+        fetch("/get_code/"+id+"/"+pid+"/Solution."+lang) // Call the fetch function passing the url of the API as a parameter
+        .then(res => res.text())
+        .then(text => editor.setValue(text))
+        .catch(function(error) {
+            console.log(error);
+        });
     }
 
     function begin(id, pid) {
@@ -103,17 +108,12 @@
           if (updateElement.text() != updateText) {
             updateElement.text(updateText);
             updateElement.val(updateText);
-            setLanguage(updateText, editor);
+            setLanguage(updateText, editor, id, pid);
           }
 
         });
 
-        fetch("/get_code/"+id+"/"+pid+"/Solution.java") // Call the fetch function passing the url of the API as a parameter
-        .then(res => res.text())
-        .then(text => editor.setValue(text))
-        .catch(function(error) {
-            console.log(error);
-        });
+        setLanguage("Java", editor, id, pid);
     }
 </script>
 </body>
