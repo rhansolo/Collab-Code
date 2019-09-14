@@ -112,13 +112,27 @@ def edit():
     print(questionTitle)
     return redirect(url_for('display',name = questionTitle))
 
+
+@app.route('/vote',methods = ['POST'])
+def vote():
+	try:
+		pid = request.form['Submit1']
+		vote = 1
+	except:
+		pid = request.form['Submit2']
+		vote = -1
+	db.storeVote(pid,vote);
+	print(pid)
+	return redirect(url_for('display',name = db.getName(pid)))
+
+
 @app.route('/problem/<name>',methods=['POST','GET'])
 def display(name):
-    id = db.getID(name)[0]
-    file_name = './problems/' + id + '.p'
-    problem = pickle.load(open(file_name, 'rb'))[0]
-
-    return render_template("index.html", problemstate= problem,pid = id,user =session["uname"],problemname = name)
+	id = db.getID(name)
+	id = id[0]
+	file_name = './problems/' + id + '.p'
+	problem = pickle.load(open(file_name, 'rb'))[0]
+	return render_template("index.html", problemstate= problem,pid = id,user =session["uname"],problemname = name)
 
 @app.route('/get_code/<id>/<pid>/<lang>')
 def get_code(id,pid,lang):
@@ -172,7 +186,6 @@ def submit(id,pid,lang):
 
 	print(tmp)
 	return jsonify(tmp)
-
 
 
 def gen_rand():

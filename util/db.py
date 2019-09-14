@@ -94,8 +94,22 @@ def addProg(time,pid,id,status,path):
 		cur= db.cursor()
 		cur.execute("INSERT INTO user VALUES(?,?,?,?,?)",(time,pid,id,"inprog",path))
 
+def storeVote(pid,vote):
+	with sqlite3.connect("discobandit.db") as db:
+		cur= db.cursor()
+		if (vote > 0):
+			cur.execute("UPDATE question SET upvotes = upvotes + 1 WHERE id = ?",(pid,))
+		else:
+			cur.execute("UPDATE question SET downvotes = downvotes + 1 WHERE id = ?",(pid,))
+
 def getID(name):
 	with sqlite3.connect("discobandit.db") as db:
 		cur= db.cursor()
 		id= cur.execute("SELECT id from question WHERE name = ?",(name,)).fetchone()
 	return id
+
+def getName(id):
+	with sqlite3.connect("discobandit.db") as db:
+		cur= db.cursor()
+		name= cur.execute("SELECT name from question WHERE id = ?",(id,)).fetchone()
+	return name[0]
