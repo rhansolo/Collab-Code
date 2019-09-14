@@ -66,7 +66,7 @@
                         <a class="dropdown-item" href="#">C++</a>
                       </div>
                     </div>
-                    <button type="button" class="btn btn-sm btn-secondary" id="submit" onclick="submit()">Submit</button>
+                    <button type="button" class="btn btn-sm btn-secondary" id="submit">Submit</button>
                 </div>
                 <div id="editor">public class Solution {
     public static void main(String[] args) {
@@ -159,7 +159,7 @@
 
         });
 
-        var submit = $(".submit");
+        var submit = $("#submit");
         submit.on('click', function() {
             code_content = editor.getValue();
             lang = $(".dropdown-menu").closest(".btn-group").find('.btn').text()
