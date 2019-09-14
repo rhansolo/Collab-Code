@@ -4,7 +4,8 @@ import sqlite3
 import datetime,os
 import os,binascii
 import util.db as db
-from flask import Flask, render_template, request, session, url_for, redirect, flash
+from runner import runner
+from flask import Flask, render_template, request, session, url_for, redirect, flash, jsonify
 from passlib.hash import pbkdf2_sha256
 
 
@@ -143,8 +144,20 @@ def write_code(id,pid,lang):
         file = open(path,"w+")
         file.write(request.json['code'])
         file.close()
-        db.updateStatus(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),id,pid,path)
+        #db.updateStatus(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),id,pid,path)
     return "fuck you"
+
+@app.route('/submit/<id>/<pid>/<lang>')
+def submit(id,pid,lang):
+    questionpath = "problems/" + pid + ".p"
+    questionpath = os.path.abspath(questionpath)
+    solutionpath = "working/"+id + "_" + pid
+    solutionpath = os.path.join(solutionpath, lang)
+    solutionpath = os.path.abspath(solutionpath)
+    tmp = runner.run_java(solutionpath,questionpath)
+    return jsonify(tmp)
+
+
 
 def gen_rand():
     return str(binascii.b2a_hex(os.urandom(15)))

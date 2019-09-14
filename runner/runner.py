@@ -8,12 +8,11 @@ import time
 TIME_LIMIT = 2 # Time limit in seconds
 
 def run_java(file_path, question_path):
-    curr_dir = os.getcwd()
     file_path, file_name = os.path.split(file_path)
 
     os.chdir(file_path if file_path != '' else '.')
 
-    compiler = subprocess.Popen(['javac', file_name], stdout=subprocess.PIPE,
+    compiler = subprocess.Popen(['javac', os.path.join(file_path, file_name)], stdout=subprocess.PIPE,
                                 stdin=subprocess.PIPE, stderr=subprocess.PIPE,
                                 encoding='utf8')
 
@@ -21,7 +20,6 @@ def run_java(file_path, question_path):
     c_rc = compiler.returncode
 
     if c_rc != 0:
-        os.chdir(curr_dir)
         return c_o[1]
 
     question = pickle.load(open(question_path, 'rb'))[1]
@@ -30,7 +28,7 @@ def run_java(file_path, question_path):
 
     for case, answer in question:
         try:
-            runner = subprocess.Popen(['java', file_name.split('.')[0]]+case,
+            runner = subprocess.Popen(['java', '-cp', file_path, file_name.split('.')[0]]+case,
                                       stdout=subprocess.PIPE,
                                       stdin=subprocess.PIPE,
                                       stderr=subprocess.PIPE, encoding='utf8')
@@ -54,6 +52,5 @@ def run_java(file_path, question_path):
                     results += 'i'
         except:
             results += ["fuck?"]
-    os.chdir(curr_dir)
 
     return results
