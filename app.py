@@ -9,7 +9,7 @@ from passlib.hash import pbkdf2_sha256
 
 
 db.create()
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='static')
 app.secret_key=os.urandom(32)# 32 bits of random data as a string
 
 @app.route("/")
@@ -114,10 +114,10 @@ def display(name):
     id = db.getID(name)[0]
     file_name = './problems/' + id + '.p'
     problem = pickle.load(open(file_name, 'rb'))[0]
-    return render_template("display.html",fileid = id)
+    return render_template("index.html")
 
 def gen_rand():
     return str(binascii.b2a_hex(os.urandom(15)))
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)

@@ -77,5 +77,5 @@ def getDoneProblems(username):
 def getID(name):
 	with sqlite3.connect("discobandit.db") as db:
 		cur= db.cursor()
-		id= cur.execute("SELECT id from question WHERE author = ?",(name,)).fetchone()
+		id= cur.execute("SELECT id from question WHERE name = ?",(name,)).fetchone()
 	return id

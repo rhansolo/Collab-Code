@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% extends "baseLoggedIn.html" %}
+{% block content %}
 <html lang="en">
 <head>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -7,7 +9,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <title>ACE in Action</title>
 <style type="text/css" media="screen">
-    /*#edit { 
+    /*#edit {
         height: 100vh;
     }*/
 
@@ -25,7 +27,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6">
-            test
+            here is {{fileid}}
         </div>
         <div class="col-md-6">
             <div class="card bg-dark" id="edit">
@@ -42,14 +44,14 @@
                 </div>
                 <div id="editor">public class Solution {
     public static void main(String[] args) {
-        
+
     }
 }</div>
             </div>
         </div>
     </div>
 </div>
-    
+
 <script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 <script>
@@ -86,11 +88,11 @@
     });
 
     var menus = $(".dropdown-menu");
-    menus.on('click', 'a', function(el) { 
+    menus.on('click', 'a', function(el) {
 
       var clickedElement = $(el.currentTarget);
       var updateText = clickedElement.text();
-      var updateElement = $(el.currentTarget).closest(".btn-group").find('.btn'); 
+      var updateElement = $(el.currentTarget).closest(".btn-group").find('.btn');
 
       if (updateElement.text() != updateText) {
         updateElement.text(updateText);
@@ -102,3 +104,4 @@
 </script>
 </body>
 </html>
+{% endblock %}
