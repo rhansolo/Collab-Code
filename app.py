@@ -117,22 +117,23 @@ def display(name):
 
     return render_template("index.html", problemstate= problem,pid = id,user =session["uname"])
 
-@app.route('get_code/<id>/<pid>/<lang>')
+@app.route('/get_code/<id>/<pid>/<lang>')
 def get_code(id,pid,lang):
-    dict = ["Solution.java":"public class Solution {\n    public static void main(String[] args) {\n        \n    }\n}",
+    dict = {"Solution.java":"public class Solution {\n    public static void main(String[] args) {\n        \n    }\n}",
         "Solution.cpp" : "#include <bits/stdc++.h>\n\nusing namespace std;\n\nint main() {\n    return 0;\n}",
-        "Solution.py": "if __name__ == '__main__':\n    "]
+        "Solution.py": "if __name__ == '__main__':\n    "}
     path = "./working/"+id + "_" + pid
-    if (!os.path.exists(path)):
-        os.mkdir(path)
+    if not os.path.exists(path):
+        os.makedirs(path)
     else:
         path += "/" + lang
         if (os.path.exists(path)):
             file = open(path,"r")
             return file.read()
         else:
-            file = open(path,"wb+")
+            file = open(path,"w+")
             file.write(dict[lang])
+            file.close()
             return dict[lang]
 
 def gen_rand():
