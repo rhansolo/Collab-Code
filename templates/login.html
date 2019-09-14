@@ -3,26 +3,37 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<center>
+<div class = "container-fluid">
+  <div class="row flex-xl justify-content-center">
+  <div class="col-md-4">
+    <form action="/authenticate" method="POST">
+      <br>
+      <br>
+      <h2 class="text-info pb-2 text-center"><b>Collab-Code</b></h2>
+        <div class="row pb-2">
+          <div class="col-md-1 text-right">
+            &#x1F464;
+          </div>
+          <div class="col-md-11">
+            <input type="hidden" name="address" value="{{address}}">
+            <input class="form-control mr-sm-2" type="text" name="username" placeholder = "Username" required>
+          </div>
+        </div>
+        <div class="row pb-4">
+          <div class="col-md-1">
+            &#128274;
+          </div>
+          <div class="col-md-11">
+            <input class="form-control mr-sm-2" type="password" name="password" placeholder = "Password" required>
+          </div>
+        </div>
+       <input class="btn btn-block btn-warning text-dark shadow mb-5" type="submit" name="submit" value ="Login">
+     </form>
 
-<br>
-
-<form action="/authenticate" method="POST">
-    Username: 
-    <input type="text" name="username" autofocus placeholder="username" ><br>
-    Password:
-    <input type="password" name="password" placeholder="password"><br>
-    <button type ="submit">Login</button>
-</form>
-
-<br>
-<br>
-
-<form action="/newUser" method="POST">
-    <button type ="submit">Create Account</button>
-</form>
-</center>
-
-
-
+     <form action="/newUser" method="POST">
+       <input class="btn btn-block btn-warning text-dark shadow" type="submit" name="submit" value ="Register">
+    </form>
+   </div>
+   </div>
+ </div>
 {% endblock %}

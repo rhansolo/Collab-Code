@@ -5,22 +5,65 @@
 
 
 {% block content %}
-<form action="/addUser" method="post">
-    <p>Create a username and password </p>
+<div class="container-fluid">
+  <div class="row flex-xl justify-content-center">
+  <div class="col-md-4">
+    <form action="/addUser" method="POST">
+      <br>
+      <br>
+      <h2 class="text-info pb-2 text-center"><b>Create Account</b></h2>
+          <div class="row pb-2">
+            <div class="col-md-1">
+              &#x1F464;
+            </div>
+            <div class="col-md-11">
+              <input type="text" class="form-control mr-sm-2" name="username" placeholder="Username" required>
+            </div>
+          </div>
+          <div class="row pb-2">
+            <div class="col-md-1">
+              &#x1F464;
+            </div>
+            <div class="col-md-11">
+              <input type="text" class="form-control mr-sm-2" name="name" placeholder="Name" required>
+            </div>
+          </div>
+
+          <div class="row pb-2">
+            <div class="col-md-1">
+📧
+            </div>
+            <div class="col-md-11">
+              <input type="text" class="form-control mr-sm-2" name="email" placeholder="Email" required>
+            </div>
+          </div>
+
+          <div class="row pb-2">
+            <div class="col-md-1">
+              &#128274;
+            </div>
+            <div class="col-md-11">
+              <input type="password" class="form-control mr-sm-2" name="password" placeholder="Password" required>
+            </div>
+          </div>
+
+          <div class="row pb-4">
+            <div class="col-md-1">
+              &#128274;
+            </div>
+            <div class="col-md-11">
+              <input type="password" class="form-control mr-sm-2" name="confirm_password" placeholder="Confirm Password" required>
+            </div>
+          </div>
 
 
-    Username: <input type="text" name="username">
-    <br>
-    Name: <input type= "text" name = "name">
-    <br>
-    Email: <input type ="text" name = "email">
-    <br>
-    Password: <input type="password" name="password">
-    <br>
-    Confirm Password: <input type="password" name="confirm_password">
-    <br>
 
-    <input type="submit" name="Subl">
-</form>
+
+
+      <input class="btn btn-block btn-warning text-dark shadow mb-5" type="submit" name="Subl" value = "Register">
+    </form>
+  </div>
+  </div>
+</div>
 
 {% endblock %}
