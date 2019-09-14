@@ -58,9 +58,24 @@ def run_python(file_path, question_path):
     question = pickle.load(open(question_path, 'rb'))[1]
     results = []
 
+    runner = subprocess.Popen(['python3',file_path]+question[0][0],
+                                                stdout=subprocess.PIPE,
+                                                stdin=subprocess.PIPE,
+                                                stderr=subprocess.PIPE, encoding='utf8')
+
+    start = time.time()
+    time_exceeded = False
+    while runner.poll() is None:
+        if time.time()-start > TIME_LIMIT:
+            time_exceeded = True
+            runner.kill()
+
+    if runner.returncode != 0 and time_exceeded == False:
+        return runner.communicate()[1]
+
     for case, answer in question:
         try:
-            runner = subprocess.Popen(['python3',file_path],
+            runner = subprocess.Popen(['python3',file_path]+case,
                                                 stdout=subprocess.PIPE,
                                                 stdin=subprocess.PIPE,
                                                 stderr=subprocess.PIPE, encoding='utf8')
