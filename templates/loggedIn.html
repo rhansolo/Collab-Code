@@ -35,27 +35,42 @@
       </tbody>
     </table>
   </div>
-    <table border = "1">
-    <tr><th>Created Problems</th></tr>
-        {% for name in arr1 %}
+  <div style="width: 200px;">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Problems In Progress</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for name in arr2 %}
         <tr><td><a href = {{ url_for('edit', title=name) }}>{{ name.0 }}</a></td></tr>
         {# Displays url for specified story #}
         {% endfor %}
-      </table>
-      <table border = "1">
-      <tr><th>Problems In Progress</th></tr>
-          {% for name in arr2 %}
-          <tr><td><a href = {{ url_for('edit', title=name) }}>{{ name.0 }}</a></td></tr>
-          {# Displays url for specified story #}
-          {% endfor %}
-        </table>
-        <table border = "1">
-        <tr><th>Problems Done</th></tr>
-            {% for name in arr3 %}
-            <tr><td><a href = {{ url_for('edit', title=name) }}>{{ name.0 }}</a></td></tr>
-            {# Displays url for specified story #}
-            {% endfor %}
-          </table>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div style="width: 200px;">
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Done Problems</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {% for name in arr3 %}
+      <tr><td><a href = {{ url_for('edit', title=name) }}>{{ name.0 }}</a></td></tr>
+      {# Displays url for specified story #}
+      {% endfor %}
+    </tr>
+  </tbody>
+</table>
+</div>
+
+  
   </body>
 </html>
 {% endblock %}
