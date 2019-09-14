@@ -159,7 +159,13 @@ def submit(id,pid,lang):
 	solutionpath = os.path.join(solutionpath, lang)
 	solutionpath = os.path.abspath(solutionpath)
 	#tmp = runner.run_java(solutionpath,questionpath)
-	tmp = runner.run_cpp(solutionpath, questionpath)#tmp = runner.run_python(solutionpath,questionpath)
+	tmp = ""
+	if (lang == "Solution.java"):
+		tmp = runner.run_java(solutionpath, questionpath)
+	elif (lang == "Solution.py"):
+		tmp = runner.run_python(solutionpath,questionpath)
+	elif (lang == "Solution.cpp"):
+		tmp = runner.run_cpp(solutionpath,questionpath)
 	if (not tmp == "" and (len(set(tmp)) == 1 and tmp[0] == 'c')):
 		print("IS DONE")
 		db.updateStatus(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),pid,id,"done","./working/"+id + "_" + pid)
