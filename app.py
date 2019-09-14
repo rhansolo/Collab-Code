@@ -17,7 +17,7 @@ def homepage():
 	'''Displays appropriate homepage based on whether user is logged in.'''
 	if session.get("uname"):
 		username = session["uname"]
-		return render_template("loggedIn.html", user = username)
+		return render_template("loggedIn.html", user = username, arr1 = db.getCreatedProblems(username),arr2 =db.getInProgressProblems(username),arr3=db.getDoneProblems(username) )
 	return render_template("login.html",Title = 'Login')
 
 @app.route("/newUser", methods=['POST','GET'])
@@ -71,9 +71,10 @@ def createNewProblem():
 
 @app.route("/storeproblem", methods=['POST'])
 def store():
+    if not session.get("uname"):
+	       return redirect(url_for("homepage"))
     problemName = request.form["problemName"]
     problem = request.form["problem"]
-
     test_cases = [(request.form['t'+str(i)].split(), request.form['s'+str(i)].split()) for i in range(1, 11) if request.form['t'+str(i)] != '']
     solution = request.form["solution"]
 
@@ -87,7 +88,8 @@ def store():
         path = './problems/'+tmp+'.p'
     file = open(path, 'wb+')
     pickle.dump(to_save, file)
-    db.addQuestion(problemName,tmp,0,0)
+    db.addQuestion(problemName,tmp,session["uname"],0,0)
+    db.addUserProblem(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),tmp,session["uname"],"created",path)
     flash('Problem created!')
     return redirect(url_for("homepage"))
 
@@ -98,6 +100,21 @@ def logout():
 		return redirect(url_for("homepage"))
 	session.pop('uname') #ends session
 	return redirect(url_for('homepage')) #goes to home, where you can login
+
+@app.route('/edit', methods = ['POST','GET'])
+def edit():
+    if not session.get("uname"):
+        return redirect(url_for("homepage"))
+    questionTitle=request.args.get("title")
+    print(questionTitle)
+    return redirect(url_for('display',name = questionTitle))
+
+@app.route('/problem/<name>',methods=['POST','GET'])
+def display(name):
+    id = db.getID(name)[0]
+    file_name = './problems/' + id + '.p'
+    problem = pickle.load(open(file_name, 'rb'))[0]
+    return render_template("display.html",fileid = id)
 
 def gen_rand():
     return str(binascii.b2a_hex(os.urandom(15)))

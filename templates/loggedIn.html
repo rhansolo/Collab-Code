@@ -12,6 +12,27 @@
       <button type="submit">Create Problem</button>
       </form>
     </div>
+    <table border = "1">
+    <tr><th>Created Problems</th></tr>
+        {% for name in arr1 %}
+        <tr><td><a href = {{ url_for('edit', title=name) }}>{{ name.0 }}</a></td></tr>
+        {# Displays url for specified story #}
+        {% endfor %}
+      </table>
+      <table border = "1">
+      <tr><th>Problems In Progress</th></tr>
+          {% for name in arr2 %}
+          <tr><td><a href = {{ url_for('edit', title=name) }}>{{ name.0 }}</a></td></tr>
+          {# Displays url for specified story #}
+          {% endfor %}
+        </table>
+        <table border = "1">
+        <tr><th>Problems Done</th></tr>
+            {% for name in arr3 %}
+            <tr><td><a href = {{ url_for('edit', title=name) }}>{{ name.0 }}</a></td></tr>
+            {# Displays url for specified story #}
+            {% endfor %}
+          </table>
   </body>
 </html>
 {% endblock %}
