@@ -115,7 +115,7 @@ def display(name):
     file_name = './problems/' + id + '.p'
     problem = pickle.load(open(file_name, 'rb'))[0]
 
-    return render_template("index.html", problemstate= problem,pid = id,user =session["uname"])
+    return render_template("index.html", problemstate= problem,pid = id,user =session["uname"],problemname = name)
 
 @app.route('/get_code/<id>/<pid>/<lang>')
 def get_code(id,pid,lang):
@@ -125,16 +125,26 @@ def get_code(id,pid,lang):
     path = "./working/"+id + "_" + pid
     if not os.path.exists(path):
         os.makedirs(path)
+    path = os.path.join(path, lang)
+    if (os.path.exists(path)):
+        file = open(path,"r")
+        return file.read()
     else:
-        path += "/" + lang
-        if (os.path.exists(path)):
-            file = open(path,"r")
-            return file.read()
-        else:
-            file = open(path,"w+")
-            file.write(dict[lang])
-            file.close()
-            return dict[lang]
+        file = open(path,"w+")
+        file.write(dict[lang])
+        file.close()
+        return dict[lang]
+
+@app.route('/write_code/<id>/<pid>/<lang>',methods = ['POST','GET'])
+def write_code(id,pid,lang):
+    if request.method == 'POST':
+        path = "./working/"+id + "_" + pid
+        path = os.path.join(path, lang)
+        file = open(path,"w+")
+        file.write(request.json['code'])
+        file.close()
+        db.updateStatus(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),id,pid,path)
+    return "fuck you"
 
 def gen_rand():
     return str(binascii.b2a_hex(os.urandom(15)))

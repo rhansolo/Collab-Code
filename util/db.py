@@ -73,6 +73,11 @@ def getDoneProblems(username):
 			names.append(name[0])
 	return names
 
+def updateStatus(time,id,pid,path):
+	with sqlite3.connect("discobandit.db") as db:
+		cur= db.cursor()
+		cur.execute("INSERT INTO user VALUES(?,?,?,?,?)",(time,pid,id,"inprog",path))
+
 
 def getID(name):
 	with sqlite3.connect("discobandit.db") as db:
